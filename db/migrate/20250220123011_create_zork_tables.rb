@@ -16,6 +16,7 @@ class CreateZorkTables < ActiveRecord::Migration[7.0]
     create_table :items do |t|
       t.string :name
       t.text :description
+      t.integer :item_type
       t.references :room, null: true
       t.references :player, null: true
       t.timestamps

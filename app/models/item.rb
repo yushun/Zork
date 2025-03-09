@@ -1,17 +1,18 @@
 class Item < ApplicationRecord
-  belongs_to :room
+  belongs_to :room, optional: true
   belongs_to :player, optional: true
   
   validates :name, presence: true
   validates :weight, numericality: { greater_than_or_equal_to: 0 }
+  validates :description, presence: true
   
   # Add enum for item type/category
-  enum item_type: {
+  enum :item_type, {
     weapon: 0,
-    armor: 1,
-    consumable: 2,
-    quest_item: 3,
-    treasure: 4
+    tool: 1,
+    key: 2,
+    container: 3,
+    readable: 4
   }
   
   # Scopes for easy querying
