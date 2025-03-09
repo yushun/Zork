@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_20_123011) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_09_072118) do
   create_table "exits", force: :cascade do |t|
     t.integer "room_id"
     t.integer "destination_id"
@@ -29,6 +29,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_20_123011) do
     t.integer "player_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "weight"
+    t.boolean "is_carriable"
+    t.boolean "is_equipped"
+    t.integer "armor_rating"
+    t.integer "damage"
+    t.integer "container_id"
+    t.index ["container_id"], name: "index_items_on_container_id"
     t.index ["player_id"], name: "index_items_on_player_id"
     t.index ["room_id"], name: "index_items_on_room_id"
   end
@@ -46,4 +53,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_20_123011) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "items", "items", column: "container_id"
 end
