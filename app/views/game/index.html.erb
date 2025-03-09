@@ -1,0 +1,30 @@
+<div class="terminal">
+  <div class="terminal-output" id="game-output">
+    <% if @output %>
+      <div class="output-line"><%= simple_format(@output) %></div>
+    <% end %>
+  </div>
+  
+  <div class="command-input">
+    <%= form_tag(command_path, method: :post, class: "command-form", data: { turbo: true }) do %>
+      <div class="input-line">
+        <span class="prompt">&gt;</span>
+        <%= text_field_tag :command, nil, class: "command-field", autofocus: true, autocomplete: "off" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="help-panel">
+  <h2>Available Commands</h2>
+  <ul>
+    <li><code>go [direction]</code> - Move north, south, east, or west</li>
+    <li><code>look</code> - Look around</li>
+    <li><code>inventory</code> - Check your items</li>
+    <li><code>take [item]</code> - Pick up an item</li>
+    <li><code>drop [item]</code> - Drop an item</li>
+    <li><code>examine [item]</code> - Look at an item closely</li>
+    <li><code>use [item]</code> - Use an item</li>
+    <li><code>help</code> - Show this help</li>
+  </ul>
+</div> 

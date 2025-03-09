@@ -8,3 +8,153 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+/*
+ *= require_tree .
+ *= require_self
+ */
+
+:root {
+  --terminal-bg: #0a0a0a;
+  --terminal-text: #33ff33;
+  --terminal-cursor: #33ff33;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  background-color: #1a1a1a;
+  color: var(--terminal-text);
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.game-container {
+  display: flex;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.terminal {
+  flex: 1;
+  background-color: var(--terminal-bg);
+  border: 2px solid var(--terminal-text);
+  border-radius: 10px;
+  padding: 20px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-output {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.output-line {
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+}
+
+.command-input {
+  border-top: 1px solid var(--terminal-text);
+  padding-top: 10px;
+}
+
+.input-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.prompt {
+  color: var(--terminal-text);
+  font-weight: bold;
+}
+
+.command-field {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--terminal-text);
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  padding: 5px;
+  outline: none;
+}
+
+.help-panel {
+  width: 300px;
+  background-color: var(--terminal-bg);
+  border: 2px solid var(--terminal-text);
+  border-radius: 10px;
+  padding: 20px;
+  height: fit-content;
+}
+
+.help-panel h2 {
+  margin-top: 0;
+  border-bottom: 1px solid var(--terminal-text);
+  padding-bottom: 10px;
+}
+
+.help-panel ul {
+  list-style: none;
+  padding: 0;
+}
+
+.help-panel li {
+  margin-bottom: 10px;
+}
+
+.help-panel code {
+  background-color: rgba(51, 255, 51, 0.1);
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--terminal-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--terminal-text);
+  border-radius: 4px;
+}
+
+/* Blinking cursor effect */
+.command-field::after {
+  content: '▋';
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Add some scan lines effect */
+.terminal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+}
