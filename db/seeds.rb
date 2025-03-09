@@ -47,9 +47,9 @@ puts "Setting up room connections..."
   forest_path: { west: forest }
 }.each do |room_name, connections|
   room = eval(room_name.to_s)
-  connections.each do |direction, connected_room_name|
-    connected_room = eval(connected_room_name.to_s)
-    room.connected_rooms << connected_room
+  connections.each do |direction, connected_room|
+    puts "Creating exit from #{room_name} to #{connected_room} in direction #{direction}"
+    Exit.create!(room: room, destination: connected_room, direction: direction)
   end
 end
 
