@@ -54,7 +54,6 @@ puts "Setting up room connections..."
 }.each do |room_name, connections|
   room = eval(room_name.to_s)
   connections.each do |direction, connected_room|
-    puts "Creating exit from #{room_name} to #{connected_room} in direction #{direction}"
     Exit.create!(room: room, destination: connected_room, direction: direction)
   end
 end
