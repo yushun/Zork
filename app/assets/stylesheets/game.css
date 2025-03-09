@@ -1,0 +1,28 @@
+.game-container {
+  max-width: 800px;
+  margin: 20px auto;
+  font-family: monospace;
+}
+
+.output {
+  background: #000;
+  color: #fff;
+  padding: 20px;
+  min-height: 400px;
+  margin-bottom: 20px;
+}
+
+.command-form {
+  display: flex;
+  gap: 10px;
+}
+
+.command-input {
+  flex: 1;
+  padding: 10px;
+  font-family: monospace;
+}
+
+.command-button {
+  padding: 10px 20px;
+} 
