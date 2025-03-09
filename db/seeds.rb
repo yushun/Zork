@@ -46,9 +46,10 @@ puts "Setting up room connections..."
   forest: { west: east_of_house, east: forest_path },
   forest_path: { west: forest }
 }.each do |room_name, connections|
-  room = binding.local_variable_get(room_name)
-  connections.each do |direction, connected_room|
-    room.update!("#{direction}_room": connected_room)
+  room = eval(room_name.to_s)
+  connections.each do |direction, connected_room_name|
+    connected_room = eval(connected_room_name.to_s)
+    room.connected_rooms << connected_room
   end
 end
 
