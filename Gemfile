@@ -9,7 +9,7 @@ gem "rails", "~> 8.0.1"
 gem "sqlite3", "~> 2.1"
 
 # Web server
-gem "puma", "~> 6.0"
+gem "puma", "~> 6.6"
 gem "propshaft"
 
 # Asset pipeline
