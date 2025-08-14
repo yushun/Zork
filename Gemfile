@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby "3.3.7"
 
 # Rails itself
-gem "rails", "~> 8.0.1"
+gem "rails", "~> 8.0.2"
 
 # Database
 gem "sqlite3", "~> 2.1"
