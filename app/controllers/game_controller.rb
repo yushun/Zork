@@ -8,17 +8,26 @@ class GameController < ApplicationController
 
   def command
     command_text = params[:command].to_s.strip
-    output = case command_text.downcase.split
-             when ['go', *direction] then @player.move(direction)
-             when ['take', *item] then @player.take(item)
-             when ['drop', *item] then @player.drop(item)
-             when ['look'] then @player.look
-             when ['inventory'] then inventory_output
-             when ['examine', *item] then @player.examine(item)
-             when ['use', *item] then @player.use(item)
-             when ['talk', 'to', *npc] then @player.talk_to(npc)
-             when ['help'] then show_help
-             when ['quit'] then "Please refresh the page to start over."
+    words = command_text.downcase.split
+    verb = words.first
+    rest = words.drop(1)
+
+    output = case verb
+             when 'go' then @player.move(rest)
+             when 'take' then @player.take(rest)
+             when 'drop' then @player.drop(rest)
+             when 'look' then @player.look
+             when 'inventory' then inventory_output
+             when 'examine' then @player.examine(rest)
+             when 'use' then @player.use(rest)
+             when 'talk'
+               if rest.first == 'to'
+                 @player.talk_to(rest.drop(1))
+               else
+                 "I don't understand that command."
+               end
+             when 'help' then show_help
+             when 'quit' then "Please refresh the page to start over."
              else "I don't understand that command."
              end
 
