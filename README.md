@@ -18,7 +18,7 @@ A web-based implementation of a Zork-like text adventure game built with Ruby on
 
 ## 🛠 Technical Requirements
 
-- Ruby 3.3.7
+- Ruby 3.4.7
 - Rails 8.0.1
 - SQLite3
 - Node.js (for asset compilation)

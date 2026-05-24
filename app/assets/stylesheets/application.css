@@ -53,11 +53,40 @@ body {
   overflow-y: auto;
   margin-bottom: 20px;
   padding: 10px;
+  background:
+    linear-gradient(rgba(51, 255, 51, 0.035), rgba(51, 255, 51, 0.035)),
+    repeating-linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.02),
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 1px,
+      transparent 28px
+    );
+  border-radius: 6px;
 }
 
 .output-line {
   margin-bottom: 10px;
   white-space: pre-wrap;
+}
+
+.transcript-entry {
+  margin-bottom: 14px;
+}
+
+.transcript-entry-command {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: #9dff9d;
+}
+
+.transcript-entry-system {
+  padding-left: 24px;
+}
+
+.command-text {
+  word-break: break-word;
 }
 
 .command-input {
@@ -85,6 +114,11 @@ body {
   font-size: 18px;
   padding: 5px;
   outline: none;
+  caret-color: var(--terminal-cursor);
+}
+
+.command-field::placeholder {
+  color: rgba(51, 255, 51, 0.45);
 }
 
 .help-panel {
@@ -118,6 +152,32 @@ body {
 }
 
 /* Scrollbar styling */
+.terminal-output::-webkit-scrollbar {
+  width: 10px;
+}
+
+.terminal-output::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.terminal-output::-webkit-scrollbar-thumb {
+  background: rgba(51, 255, 51, 0.35);
+  border-radius: 999px;
+}
+
+@media (max-width: 900px) {
+  .game-container {
+    flex-direction: column;
+  }
+
+  .terminal {
+    height: 70vh;
+  }
+
+  .help-panel {
+    width: auto;
+  }
+}
 ::-webkit-scrollbar {
   width: 8px;
 }

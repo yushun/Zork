@@ -1,7 +1,16 @@
 <div class="terminal">
   <div class="terminal-output" id="game-output">
-    <% if @output %>
-      <div class="output-line"><%= simple_format(@output) %></div>
+    <% Array(@transcript).each do |entry| %>
+      <% if entry["kind"] == "command" %>
+        <div class="transcript-entry transcript-entry-command">
+          <span class="prompt">&gt;</span>
+          <span class="command-text"><%= entry["text"] %></span>
+        </div>
+      <% else %>
+        <div class="transcript-entry transcript-entry-system">
+          <div class="output-line"><%= simple_format(entry["text"]) %></div>
+        </div>
+      <% end %>
     <% end %>
   </div>
   
