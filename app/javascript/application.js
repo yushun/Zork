@@ -20,6 +20,24 @@ const scrollTranscriptToBottom = (output) => {
   }
 };
 
+const bindTranscriptAutoScroll = (output) => {
+  if (!output || output.dataset.autoScrollBound === 'true') {
+    return;
+  }
+
+  output.dataset.autoScrollBound = 'true';
+
+  const observer = new MutationObserver(() => {
+    requestAnimationFrame(() => scrollTranscriptToBottom(output));
+  });
+
+  observer.observe(output, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+};
+
 const initializeGameView = () => {
   const commandField = document.querySelector('.command-field');
   const commandForm = document.querySelector('.command-form');
@@ -27,6 +45,7 @@ const initializeGameView = () => {
   const commandHistory = loadHistory();
   let historyIndex = -1;
 
+  bindTranscriptAutoScroll(output);
   requestAnimationFrame(() => scrollTranscriptToBottom(output));
 
   if (!commandField || !commandForm) {
