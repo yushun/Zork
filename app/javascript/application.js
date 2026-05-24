@@ -20,14 +20,14 @@ const scrollTranscriptToBottom = (output) => {
   }
 };
 
-document.addEventListener('turbo:load', () => {
+const initializeGameView = () => {
   const commandField = document.querySelector('.command-field');
   const commandForm = document.querySelector('.command-form');
   const output = document.querySelector('.terminal-output');
   const commandHistory = loadHistory();
   let historyIndex = -1;
 
-  scrollTranscriptToBottom(output);
+  requestAnimationFrame(() => scrollTranscriptToBottom(output));
 
   if (!commandField || !commandForm) {
     return;
@@ -68,4 +68,6 @@ document.addEventListener('turbo:load', () => {
       }
     }
   });
-});
+};
+
+document.addEventListener('turbo:load', initializeGameView);

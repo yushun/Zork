@@ -2,8 +2,10 @@ class GameController < ApplicationController
   before_action :set_player
   
   def index
-    transcript_entries << system_entry(@player.look) if transcript_entries.empty?
-    @transcript = transcript_entries
+    transcript = transcript_entries
+    transcript << system_entry(@player.look) if transcript.empty?
+    persist_transcript(transcript)
+    @transcript = transcript
   end
 
   def command
@@ -31,9 +33,11 @@ class GameController < ApplicationController
              else "I don't understand that command."
              end
 
-    append_transcript(command_entry(command_text)) if command_text.present?
-    append_transcript(system_entry(output))
-    @transcript = transcript_entries
+    transcript = transcript_entries
+    transcript << command_entry(command_text) if command_text.present?
+    transcript << system_entry(output)
+    persist_transcript(transcript)
+    @transcript = transcript
     
     render :index
   end
@@ -41,6 +45,7 @@ class GameController < ApplicationController
   private
   
   def set_player
+    session.delete(:transcript)
     @player = Player.first_or_create!(current_room: starting_room)
   end
 
@@ -68,12 +73,11 @@ class GameController < ApplicationController
   end
 
   def transcript_entries
-    session[:transcript] ||= []
+    @player.transcript_entries
   end
 
-  def append_transcript(entry)
-    transcript_entries << entry
-    session[:transcript] = transcript_entries.last(40)
+  def persist_transcript(entries)
+    @player.replace_transcript(entries)
   end
 
   def system_entry(text)

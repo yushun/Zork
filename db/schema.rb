@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_09_072118) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_24_000000) do
   create_table "exits", force: :cascade do |t|
     t.integer "room_id"
     t.integer "destination_id"
@@ -44,6 +44,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_09_072118) do
     t.integer "current_room_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "transcript"
     t.index ["current_room_id"], name: "index_players_on_current_room_id"
   end
 

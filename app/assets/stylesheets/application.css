@@ -50,6 +50,7 @@ body {
 
 .terminal-output {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   margin-bottom: 20px;
   padding: 10px;

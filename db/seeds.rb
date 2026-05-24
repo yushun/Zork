@@ -1,8 +1,10 @@
 # Clear existing data
 puts "Clearing existing data..."
-Room.destroy_all
-Item.destroy_all
-Player.destroy_all
+Player.delete_all
+Exit.delete_all
+Item.update_all(container_id: nil)
+Item.delete_all
+Room.delete_all
 
 # Create Rooms
 puts "Creating rooms..."
@@ -41,18 +43,70 @@ clearing = Room.create!(
   description: "You are in a clearing, with a forest surrounding you on all sides. A path leads south."
 )
 
+river_bank = Room.create!(
+  name: "River Bank",
+  description: "A fast-moving river blocks easy passage. Smooth stones line the muddy bank."
+)
+
+cave_entrance = Room.create!(
+  name: "Cave Entrance",
+  description: "A jagged opening leads into darkness. Cold air rolls out of the cave mouth."
+)
+
+damp_cavern = Room.create!(
+  name: "Damp Cavern",
+  description: "Water drips steadily from the ceiling. The floor is slick and uneven."
+)
+
+underground_lake = Room.create!(
+  name: "Underground Lake",
+  description: "A black, still lake fills this chamber. Ripples spread when you breathe too loudly."
+)
+
+attic = Room.create!(
+  name: "Attic",
+  description: "Dusty beams and cobwebs fill the cramped attic above the house."
+)
+
+cellar = Room.create!(
+  name: "Cellar",
+  description: "The cellar smells of damp wood and old earth. Broken crates are stacked in the corners."
+)
+
 # Set up room connections
 puts "Setting up room connections..."
+rooms = {
+  west_of_house: west_of_house,
+  north_of_house: north_of_house,
+  south_of_house: south_of_house,
+  east_of_house: east_of_house,
+  forest: forest,
+  forest_path: forest_path,
+  clearing: clearing,
+  river_bank: river_bank,
+  cave_entrance: cave_entrance,
+  damp_cavern: damp_cavern,
+  underground_lake: underground_lake,
+  attic: attic,
+  cellar: cellar
+}
+
 {
   west_of_house: { north: north_of_house, south: south_of_house, east: east_of_house },
   north_of_house: { west: west_of_house, east: east_of_house },
   south_of_house: { west: west_of_house, east: east_of_house },
-  east_of_house: { north: north_of_house, south: south_of_house, east: forest },
-  forest: { west: east_of_house, east: forest_path, north: clearing },
-  forest_path: { west: forest },
-  clearing: { south: forest }
+  east_of_house: { north: north_of_house, south: south_of_house, east: forest, up: attic, down: cellar },
+  attic: { down: east_of_house },
+  cellar: { up: east_of_house, east: cave_entrance },
+  forest: { west: east_of_house, east: forest_path, north: clearing, south: river_bank },
+  forest_path: { west: forest, east: cave_entrance },
+  clearing: { south: forest, east: river_bank },
+  river_bank: { north: forest, west: clearing, east: cave_entrance },
+  cave_entrance: { west: forest_path, east: damp_cavern, up: river_bank },
+  damp_cavern: { west: cave_entrance, east: underground_lake },
+  underground_lake: { west: damp_cavern }
 }.each do |room_name, connections|
-  room = eval(room_name.to_s)
+  room = rooms.fetch(room_name)
   connections.each do |direction, connected_room|
     Exit.create!(room: room, destination: connected_room, direction: direction)
   end
@@ -80,6 +134,24 @@ leather_bag = Item.create!(
   is_carriable: true
 )
 
+wooden_chest = Item.create!(
+  name: "wooden chest",
+  description: "A heavy chest with iron bands. The hinge squeaks when touched.",
+  room: cellar,
+  item_type: :container,
+  weight: 10.0,
+  is_carriable: false
+)
+
+wicker_basket = Item.create!(
+  name: "wicker basket",
+  description: "A handwoven basket, damp but still sturdy.",
+  room: river_bank,
+  item_type: :container,
+  weight: 1.5,
+  is_carriable: true
+)
+
 # Readable Items
 leaflet = Item.create!(
   name: "leaflet",
@@ -95,6 +167,22 @@ ancient_scroll = Item.create!(
   room: clearing,
   item_type: :readable,
   weight: 0.1
+)
+
+journal = Item.create!(
+  name: "explorer journal",
+  description: "Day 17: The lake below the cave seems deeper than it looks. I heard chains in the dark.",
+  item_type: :readable,
+  weight: 0.2,
+  container: wooden_chest
+)
+
+map = Item.create!(
+  name: "charcoal map",
+  description: "A rough map marks a house, a river, and a cave linked by narrow paths.",
+  item_type: :readable,
+  weight: 0.1,
+  container: wicker_basket
 )
 
 # Weapons
@@ -114,6 +202,15 @@ dagger = Item.create!(
   item_type: :weapon,
   weight: 1.0,
   damage: 5
+)
+
+pickaxe = Item.create!(
+  name: "iron pickaxe",
+  description: "A miner's pickaxe, chipped at the edge but still deadly in close quarters.",
+  room: cave_entrance,
+  item_type: :weapon,
+  weight: 5.0,
+  damage: 8
 )
 
 # Armor
@@ -144,6 +241,14 @@ lantern = Item.create!(
   weight: 2.0
 )
 
+grappling_hook = Item.create!(
+  name: "grappling hook",
+  description: "A three-pronged hook tied to a frayed loop.",
+  room: attic,
+  item_type: :tool,
+  weight: 2.5
+)
+
 rope = Item.create!(
   name: "rope",
   description: "A sturdy hemp rope, about 50 feet long.",
@@ -161,6 +266,14 @@ brass_key = Item.create!(
   weight: 0.1
 )
 
+silver_key = Item.create!(
+  name: "silver key",
+  description: "A tarnished silver key with a fish-shaped bow.",
+  item_type: :key,
+  weight: 0.1,
+  container: wooden_chest
+)
+
 # Consumables
 bread = Item.create!(
   name: "fresh bread",
@@ -176,6 +289,22 @@ healing_potion = Item.create!(
   room: clearing,
   item_type: :consumable,
   weight: 0.2
+)
+
+dried_meat = Item.create!(
+  name: "dried meat",
+  description: "A strip of heavily salted meat. Not delicious, but it will keep you going.",
+  item_type: :consumable,
+  weight: 0.3,
+  container: wicker_basket
+)
+
+glowing_mushroom = Item.create!(
+  name: "glowing mushroom",
+  description: "A pale fungus that emits a faint blue light.",
+  room: damp_cavern,
+  item_type: :consumable,
+  weight: 0.1
 )
 
 # Create initial player

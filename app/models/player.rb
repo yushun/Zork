@@ -2,6 +2,15 @@ class Player < ApplicationRecord
   belongs_to :current_room, class_name: 'Room'
   has_many :items
   has_many :inventory, class_name: 'Item'
+  serialize :transcript, coder: JSON
+
+  def transcript_entries
+    Array(transcript)
+  end
+
+  def replace_transcript(entries)
+    update!(transcript: entries.last(40))
+  end
   
   def move(direction)
     direction_name = normalize_terms(direction)
