@@ -1,0 +1,31 @@
+.help-panel {
+  width: min(420px, 40vw);
+  background-color: var(--terminal-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: clamp(12px, 1.3vw, 20px);
+  max-height: calc(100dvh - clamp(24px, 4.8vw, 56px));
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+.help-panel h2 {
+  margin-top: 0;
+  border-bottom: 1px solid var(--terminal-text);
+  padding-bottom: 10px;
+}
+
+.help-panel ul {
+  list-style: none;
+  padding: 0;
+}
+
+.help-panel li {
+  margin-bottom: 10px;
+}
+
+.help-panel code {
+  background-color: rgba(51, 255, 51, 0.1);
+  padding: 2px 5px;
+  border-radius: 3px;
+}

@@ -1,0 +1,17 @@
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  padding: clamp(12px, 2.4vw, 28px);
+  background:
+    radial-gradient(circle at 12% 0%, #16342a 0%, rgba(22, 52, 42, 0) 38%),
+    radial-gradient(circle at 88% 100%, #1a2a20 0%, rgba(26, 42, 32, 0) 36%),
+    var(--page-bg);
+  color: var(--terminal-text);
+  font-family: 'VT323', monospace;
+  font-size: clamp(19px, 1.4vw, 24px);
+  line-height: 1.4;
+}

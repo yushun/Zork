@@ -1,0 +1,8 @@
+.game-container {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(12px, 1.6vw, 20px);
+  max-width: 1280px;
+  margin: 0 auto;
+  min-height: calc(100dvh - clamp(24px, 4.8vw, 56px));
+}

@@ -1,0 +1,13 @@
+.terminal {
+  flex: 0.72;
+  background-color: var(--terminal-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: clamp(12px, 1.4vw, 20px);
+  min-height: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.42);
+  overflow: hidden;
+}

@@ -1,0 +1,15 @@
+@media (max-width: 900px) {
+  .game-container {
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .terminal {
+    min-height: 55dvh;
+  }
+
+  .help-panel {
+    width: auto;
+    max-height: none;
+  }
+}

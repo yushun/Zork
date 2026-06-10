@@ -1,0 +1,7 @@
+:root {
+  --terminal-bg: #0a0a0a;
+  --terminal-text: #33ff33;
+  --terminal-cursor: #33ff33;
+  --page-bg: #090f0d;
+  --panel-border: rgba(74, 255, 121, 0.45);
+}
