@@ -63,22 +63,44 @@ body {
   overflow: hidden;
 }
 
-.terminal-output {
+.history-output {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  margin-bottom: 20px;
   padding: 10px;
+  opacity: 0.55;
   background:
-    linear-gradient(rgba(51, 255, 51, 0.035), rgba(51, 255, 51, 0.035)),
+    linear-gradient(rgba(51, 255, 51, 0.02), rgba(51, 255, 51, 0.02)),
     repeating-linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.02),
-      rgba(255, 255, 255, 0.02) 1px,
+      rgba(255, 255, 255, 0.015),
+      rgba(255, 255, 255, 0.015) 1px,
       transparent 1px,
       transparent 28px
     );
   border-radius: 6px;
+  transition: opacity 0.2s;
+}
+
+.history-output:hover {
+  opacity: 0.75;
+}
+
+.current-response {
+  flex-shrink: 0;
+  padding: 12px 10px 6px;
+  border-top: 1px solid rgba(51, 255, 51, 0.35);
+  background: rgba(51, 255, 51, 0.04);
+  border-radius: 0 0 8px 8px;
+  min-height: 60px;
+  max-height: 38%;
+  overflow-y: auto;
+}
+
+.current-command {
+  font-size: 1.08em;
+  color: #b8ffb8 !important;
+  letter-spacing: 0.02em;
 }
 
 .output-line {
@@ -170,16 +192,19 @@ body {
 }
 
 /* Scrollbar styling */
-.terminal-output::-webkit-scrollbar {
-  width: 10px;
+.history-output::-webkit-scrollbar,
+.current-response::-webkit-scrollbar {
+  width: 6px;
 }
 
-.terminal-output::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+.history-output::-webkit-scrollbar-track,
+.current-response::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
 }
 
-.terminal-output::-webkit-scrollbar-thumb {
-  background: rgba(51, 255, 51, 0.35);
+.history-output::-webkit-scrollbar-thumb,
+.current-response::-webkit-scrollbar-thumb {
+  background: rgba(51, 255, 51, 0.3);
   border-radius: 999px;
 }
 

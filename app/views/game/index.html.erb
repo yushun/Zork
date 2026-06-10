@@ -1,8 +1,35 @@
 <div class="terminal">
-  <div class="terminal-output" id="game-output">
-    <% Array(@transcript).each do |entry| %>
+  <%
+    all_entries   = Array(@transcript)
+    last_cmd_idx  = all_entries.rindex { |e| e["kind"] == "command" }
+    if last_cmd_idx
+      history_entries = all_entries[0, last_cmd_idx]
+      current_entries = all_entries[last_cmd_idx..]
+    else
+      history_entries = all_entries[0..-2] || []
+      current_entries = all_entries.last ? [all_entries.last] : []
+    end
+  %>
+
+  <div class="history-output" id="history-output">
+    <% history_entries.each do |entry| %>
       <% if entry["kind"] == "command" %>
         <div class="transcript-entry transcript-entry-command">
+          <span class="prompt">&gt;</span>
+          <span class="command-text"><%= entry["text"] %></span>
+        </div>
+      <% else %>
+        <div class="transcript-entry transcript-entry-system">
+          <div class="output-line"><%= simple_format(entry["text"]) %></div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="current-response" id="current-response">
+    <% current_entries.each do |entry| %>
+      <% if entry["kind"] == "command" %>
+        <div class="transcript-entry transcript-entry-command current-command">
           <span class="prompt">&gt;</span>
           <span class="command-text"><%= entry["text"] %></span>
         </div>
