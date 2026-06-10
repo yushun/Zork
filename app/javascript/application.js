@@ -1,6 +1,7 @@
 // Configure your import map in config/importmap.rb
 
 const historyKey = 'zork:command-history';
+const pendingScrollKey = 'zork:pending-scroll';
 
 const loadHistory = () => {
   try {
@@ -14,10 +15,82 @@ const saveHistory = (history) => {
   window.sessionStorage.setItem(historyKey, JSON.stringify(history.slice(0, 50)));
 };
 
+const markPendingScroll = () => {
+  window.sessionStorage.setItem(pendingScrollKey, '1');
+};
+
+const consumePendingScroll = () => {
+  const pending = window.sessionStorage.getItem(pendingScrollKey) === '1';
+  if (pending) {
+    window.sessionStorage.removeItem(pendingScrollKey);
+  }
+  return pending;
+};
+
 const scrollTranscriptToBottom = (output) => {
   if (output) {
     output.scrollTop = output.scrollHeight;
   }
+};
+
+const animateTranscriptToBottom = (output, duration = 700) => {
+  if (!output) {
+    return;
+  }
+
+  const start = output.scrollTop;
+  const target = output.scrollHeight - output.clientHeight;
+  const distance = target - start;
+
+  if (distance <= 1) {
+    output.scrollTop = target;
+    return;
+  }
+
+  const startTime = performance.now();
+
+  const easeOutCubic = (t) => 1 - (1 - t) ** 3;
+
+  const step = (timestamp) => {
+    const elapsed = timestamp - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = easeOutCubic(progress);
+    output.scrollTop = start + distance * eased;
+
+    if (progress < 1) {
+      output.__scrollAnimationFrame = requestAnimationFrame(step);
+    } else {
+      output.__scrollAnimationFrame = null;
+    }
+  };
+
+  if (output.__scrollAnimationFrame) {
+    cancelAnimationFrame(output.__scrollAnimationFrame);
+  }
+
+  output.__scrollAnimationFrame = requestAnimationFrame(step);
+};
+
+const scheduleScrollToBottom = (output, smooth = false) => {
+  if (!output) {
+    return;
+  }
+
+  // Wait for Turbo DOM updates and layout to settle before scrolling.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      if (smooth) {
+        animateTranscriptToBottom(output);
+      } else {
+        scrollTranscriptToBottom(output);
+      }
+    });
+  });
+};
+
+const isNearBottom = (element, threshold = 32) => {
+  const distanceToBottom = element.scrollHeight - (element.scrollTop + element.clientHeight);
+  return distanceToBottom <= threshold;
 };
 
 const bindTranscriptAutoScroll = (output) => {
@@ -26,9 +99,16 @@ const bindTranscriptAutoScroll = (output) => {
   }
 
   output.dataset.autoScrollBound = 'true';
+  let stickToBottom = true;
+
+  output.addEventListener('scroll', () => {
+    stickToBottom = isNearBottom(output);
+  });
 
   const observer = new MutationObserver(() => {
-    requestAnimationFrame(() => scrollTranscriptToBottom(output));
+    if (stickToBottom) {
+      requestAnimationFrame(() => animateTranscriptToBottom(output));
+    }
   });
 
   observer.observe(output, {
@@ -46,7 +126,7 @@ const initializeGameView = () => {
   let historyIndex = -1;
 
   bindTranscriptAutoScroll(output);
-  requestAnimationFrame(() => scrollTranscriptToBottom(output));
+  scheduleScrollToBottom(output, consumePendingScroll());
 
   if (!commandField || !commandForm) {
     return;
@@ -63,6 +143,10 @@ const initializeGameView = () => {
     if (!command) {
       return;
     }
+
+    markPendingScroll();
+    // Keep current page pinned while request is in flight.
+    scheduleScrollToBottom(output, true);
 
     if (commandHistory[0] !== command) {
       commandHistory.unshift(command);
@@ -90,3 +174,4 @@ const initializeGameView = () => {
 };
 
 document.addEventListener('turbo:load', initializeGameView);
+document.addEventListener('turbo:render', initializeGameView);

@@ -18,34 +18,49 @@
   --terminal-bg: #0a0a0a;
   --terminal-text: #33ff33;
   --terminal-cursor: #33ff33;
+  --page-bg: #090f0d;
+  --panel-border: rgba(74, 255, 121, 0.45);
+}
+
+html {
+  height: 100%;
 }
 
 body {
   margin: 0;
-  padding: 20px;
-  background-color: #1a1a1a;
+  min-height: 100%;
+  padding: clamp(12px, 2.4vw, 28px);
+  background:
+    radial-gradient(circle at 12% 0%, #16342a 0%, rgba(22, 52, 42, 0) 38%),
+    radial-gradient(circle at 88% 100%, #1a2a20 0%, rgba(26, 42, 32, 0) 36%),
+    var(--page-bg);
   color: var(--terminal-text);
   font-family: 'VT323', monospace;
-  font-size: 18px;
+  font-size: clamp(19px, 1.4vw, 24px);
   line-height: 1.4;
 }
 
 .game-container {
   display: flex;
-  gap: 20px;
-  max-width: 1200px;
+  align-items: stretch;
+  gap: clamp(12px, 1.6vw, 20px);
+  max-width: 1280px;
   margin: 0 auto;
+  min-height: calc(100dvh - clamp(24px, 4.8vw, 56px));
 }
 
 .terminal {
   flex: 1;
   background-color: var(--terminal-bg);
-  border: 2px solid var(--terminal-text);
-  border-radius: 10px;
-  padding: 20px;
-  height: 80vh;
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: clamp(12px, 1.4vw, 20px);
+  min-height: 0;
+  position: relative;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.42);
+  overflow: hidden;
 }
 
 .terminal-output {
@@ -92,7 +107,7 @@ body {
 
 .command-input {
   border-top: 1px solid var(--terminal-text);
-  padding-top: 10px;
+  padding-top: 12px;
 }
 
 .input-line {
@@ -123,12 +138,14 @@ body {
 }
 
 .help-panel {
-  width: 300px;
+  width: min(320px, 34vw);
   background-color: var(--terminal-bg);
-  border: 2px solid var(--terminal-text);
-  border-radius: 10px;
-  padding: 20px;
-  height: fit-content;
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: clamp(12px, 1.3vw, 20px);
+  max-height: calc(100dvh - clamp(24px, 4.8vw, 56px));
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
 }
 
 .help-panel h2 {
@@ -169,14 +186,16 @@ body {
 @media (max-width: 900px) {
   .game-container {
     flex-direction: column;
+    min-height: 0;
   }
 
   .terminal {
-    height: 70vh;
+    min-height: 55dvh;
   }
 
   .help-panel {
     width: auto;
+    max-height: none;
   }
 }
 ::-webkit-scrollbar {
@@ -193,11 +212,6 @@ body {
 }
 
 /* Blinking cursor effect */
-.command-field::after {
-  content: '▋';
-  animation: blink 1s step-end infinite;
-}
-
 @keyframes blink {
   50% { opacity: 0; }
 }
