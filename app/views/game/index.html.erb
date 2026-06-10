@@ -12,6 +12,7 @@
     end
   %>
 
+  <div class="transcript-section-title">History</div>
   <div class="terminal-output history-output" id="history-output">
     <% history_entries.each do |entry| %>
       <% if entry["kind"] == "command" %>
@@ -27,6 +28,7 @@
     <% end %>
   </div>
 
+  <div class="transcript-section-title">Current Command + Result</div>
   <div class="current-response" id="current-response">
     <% current_entries.each do |entry| %>
       <% if entry["kind"] == "command" %>

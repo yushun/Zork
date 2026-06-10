@@ -83,6 +83,7 @@ body {
 
 .history-output {
   margin-bottom: 10px;
+  border: 1px solid rgba(51, 255, 51, 0.16);
 }
 
 .current-response {
@@ -95,6 +96,14 @@ body {
   background: rgba(51, 255, 51, 0.06);
   border: 1px solid rgba(51, 255, 51, 0.25);
   border-radius: 8px;
+}
+
+.transcript-section-title {
+  font-size: 0.9em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(186, 255, 186, 0.82);
+  margin: 2px 0 6px;
 }
 
 .current-command {
@@ -151,8 +160,8 @@ body {
   border: none;
   color: var(--terminal-text);
   font-family: 'VT323', monospace;
-  font-size: 18px;
-  padding: 5px;
+  font-size: 15px;
+  padding: 2px 4px;
   outline: none;
   caret-color: var(--terminal-cursor);
 }
