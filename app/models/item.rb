@@ -106,10 +106,10 @@ class Item < ApplicationRecord
   private
 
   def set_defaults
-    self.weight ||= 0.1
-    self.is_carriable ||= true
-    self.is_equipped ||= false
-    self.armor_rating ||= 0 if armor?
-    self.damage ||= 0 if weapon?
+    self.weight       = 0.1  if weight.nil?
+    self.is_carriable = true  if is_carriable.nil?
+    self.is_equipped  = false if is_equipped.nil?
+    self.armor_rating = 0     if armor? && armor_rating.nil?
+    self.damage       = 0     if weapon? && damage.nil?
   end
 end 

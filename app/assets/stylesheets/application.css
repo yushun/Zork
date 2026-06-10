@@ -63,49 +63,49 @@ body {
   overflow: hidden;
 }
 
-.history-output {
+.terminal-output {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  margin-bottom: 20px;
   padding: 10px;
-  opacity: 0.55;
   background:
-    linear-gradient(rgba(51, 255, 51, 0.02), rgba(51, 255, 51, 0.02)),
+    linear-gradient(rgba(51, 255, 51, 0.035), rgba(51, 255, 51, 0.035)),
     repeating-linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.015),
-      rgba(255, 255, 255, 0.015) 1px,
+      rgba(255, 255, 255, 0.02),
+      rgba(255, 255, 255, 0.02) 1px,
       transparent 1px,
       transparent 28px
     );
   border-radius: 6px;
-  transition: opacity 0.2s;
 }
 
-.history-output:hover {
-  opacity: 0.75;
+.history-output {
+  margin-bottom: 10px;
 }
 
 .current-response {
-  flex-shrink: 0;
-  padding: 12px 10px 6px;
-  border-top: 1px solid rgba(51, 255, 51, 0.35);
-  background: rgba(51, 255, 51, 0.04);
-  border-radius: 0 0 8px 8px;
-  min-height: 60px;
-  max-height: 38%;
+  flex: 0 0 auto;
+  min-height: 68px;
+  max-height: 36%;
   overflow-y: auto;
+  padding: 10px;
+  margin-bottom: 12px;
+  background: rgba(51, 255, 51, 0.06);
+  border: 1px solid rgba(51, 255, 51, 0.25);
+  border-radius: 8px;
 }
 
 .current-command {
-  font-size: 1.08em;
-  color: #b8ffb8 !important;
-  letter-spacing: 0.02em;
+  color: #baffba;
 }
 
 .output-line {
   margin-bottom: 10px;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .transcript-entry {
@@ -117,6 +117,7 @@ body {
   align-items: baseline;
   gap: 10px;
   color: #9dff9d;
+  min-width: 0;
 }
 
 .transcript-entry-system {
@@ -125,6 +126,7 @@ body {
 
 .command-text {
   word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .command-input {
@@ -192,19 +194,29 @@ body {
 }
 
 /* Scrollbar styling */
-.history-output::-webkit-scrollbar,
+.terminal-output::-webkit-scrollbar {
+  width: 10px;
+}
+
 .current-response::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
-.history-output::-webkit-scrollbar-track,
+.terminal-output::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
 .current-response::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.history-output::-webkit-scrollbar-thumb,
+.terminal-output::-webkit-scrollbar-thumb {
+  background: rgba(51, 255, 51, 0.35);
+  border-radius: 999px;
+}
+
 .current-response::-webkit-scrollbar-thumb {
-  background: rgba(51, 255, 51, 0.3);
+  background: rgba(51, 255, 51, 0.35);
   border-radius: 999px;
 }
 

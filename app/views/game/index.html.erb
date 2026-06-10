@@ -1,17 +1,18 @@
 <div class="terminal">
   <%
-    all_entries   = Array(@transcript)
-    last_cmd_idx  = all_entries.rindex { |e| e["kind"] == "command" }
-    if last_cmd_idx
-      history_entries = all_entries[0, last_cmd_idx]
-      current_entries = all_entries[last_cmd_idx..]
+    entries = Array(@transcript)
+    last_command_index = entries.rindex { |entry| entry["kind"] == "command" }
+
+    if last_command_index
+      history_entries = entries.first(last_command_index)
+      current_entries = entries.drop(last_command_index)
     else
-      history_entries = all_entries[0..-2] || []
-      current_entries = all_entries.last ? [all_entries.last] : []
+      history_entries = []
+      current_entries = entries
     end
   %>
 
-  <div class="history-output" id="history-output">
+  <div class="terminal-output history-output" id="history-output">
     <% history_entries.each do |entry| %>
       <% if entry["kind"] == "command" %>
         <div class="transcript-entry transcript-entry-command">
