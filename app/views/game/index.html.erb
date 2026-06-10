@@ -12,37 +12,43 @@
     end
   %>
 
-  <div class="transcript-section-title">History</div>
-  <div class="terminal-output history-output" id="history-output">
-    <% history_entries.each do |entry| %>
-      <% if entry["kind"] == "command" %>
-        <div class="transcript-entry transcript-entry-command">
-          <span class="prompt">&gt;</span>
-          <span class="command-text"><%= entry["text"] %></span>
-        </div>
-      <% else %>
-        <div class="transcript-entry transcript-entry-system">
-          <div class="output-line"><%= simple_format(entry["text"]) %></div>
-        </div>
-      <% end %>
-    <% end %>
-  </div>
+  <section class="history-box">
+    <details class="history-panel">
+      <summary class="transcript-section-title">History</summary>
+      <div class="terminal-output history-output" id="history-output">
+        <% history_entries.each do |entry| %>
+          <% if entry["kind"] == "command" %>
+            <div class="transcript-entry transcript-entry-command">
+              <span class="prompt">&gt;</span>
+              <span class="command-text"><%= entry["text"] %></span>
+            </div>
+          <% else %>
+            <div class="transcript-entry transcript-entry-system">
+              <div class="output-line"><%= simple_format(entry["text"]) %></div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </details>
+  </section>
 
-  <div class="transcript-section-title">Current Command + Result</div>
-  <div class="current-response" id="current-response">
-    <% current_entries.each do |entry| %>
-      <% if entry["kind"] == "command" %>
-        <div class="transcript-entry transcript-entry-command current-command">
-          <span class="prompt">&gt;</span>
-          <span class="command-text"><%= entry["text"] %></span>
-        </div>
-      <% else %>
-        <div class="transcript-entry transcript-entry-system">
-          <div class="output-line"><%= simple_format(entry["text"]) %></div>
-        </div>
+  <section class="current-box">
+    <div class="transcript-section-title">Current Command + Result</div>
+    <div class="current-response" id="current-response">
+      <% current_entries.each do |entry| %>
+        <% if entry["kind"] == "command" %>
+          <div class="transcript-entry transcript-entry-command current-command">
+            <span class="prompt">&gt;</span>
+            <span class="command-text"><%= entry["text"] %></span>
+          </div>
+        <% else %>
+          <div class="transcript-entry transcript-entry-system">
+            <div class="output-line"><%= simple_format(entry["text"]) %></div>
+          </div>
+        <% end %>
       <% end %>
-    <% end %>
-  </div>
+    </div>
+  </section>
   
   <div class="command-input">
     <%= form_tag(command_path, method: :post, class: "command-form", data: { turbo: true }) do %>
