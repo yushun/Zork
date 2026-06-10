@@ -17,14 +17,15 @@
 }
 
 .history-output {
+  flex: 1.35;
   margin-bottom: 10px;
   border: 1px solid rgba(51, 255, 51, 0.16);
 }
 
 .current-response {
   flex: 0 0 auto;
-  min-height: 68px;
-  max-height: 36%;
+  min-height: 52px;
+  max-height: 24%;
   overflow-y: auto;
   padding: 10px;
   margin-bottom: 12px;

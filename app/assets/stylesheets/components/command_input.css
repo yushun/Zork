@@ -30,3 +30,25 @@
 .command-field::placeholder {
   color: rgba(51, 255, 51, 0.45);
 }
+
+@media (min-width: 1400px) {
+  .command-input {
+    padding-top: 3px;
+  }
+
+  .input-line {
+    gap: 4px;
+    line-height: 1;
+  }
+
+  .prompt {
+    font-size: 0.78em;
+    line-height: 1;
+  }
+
+  .command-field {
+    font-size: 11px;
+    padding: 0 2px;
+    line-height: 1.1;
+  }
+}
