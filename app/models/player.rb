@@ -1,4 +1,13 @@
 class Player < ApplicationRecord
+  DIRECTION_ALIASES = {
+    'n' => 'north',
+    's' => 'south',
+    'e' => 'east',
+    'w' => 'west',
+    'u' => 'up',
+    'd' => 'down'
+  }.freeze
+
   belongs_to :current_room, class_name: 'Room'
   has_many :items
   has_many :inventory, class_name: 'Item'
@@ -13,7 +22,7 @@ class Player < ApplicationRecord
   end
   
   def move(direction)
-    direction_name = normalize_terms(direction)
+    direction_name = normalize_direction(direction)
     return "Go where?" if direction_name.blank?
 
     exit = current_room.exits.find_by(direction: direction_name)
@@ -23,6 +32,45 @@ class Player < ApplicationRecord
     else
       "You can't go that way."
     end
+  end
+
+  def enter(target)
+    requested_direction = normalize_direction(target)
+    return move(requested_direction) if requested_direction.present?
+
+    available_directions = current_room.exits.pluck(:direction)
+    fallback_direction = if available_directions.include?('down')
+                           'down'
+                         elsif available_directions.include?('east')
+                           'east'
+                         end
+
+    return "Enter where?" if fallback_direction.blank?
+
+    move(fallback_direction)
+  end
+
+  def exit_area(target)
+    requested_direction = normalize_direction(target)
+    return move(requested_direction) if requested_direction.present?
+
+    available_directions = current_room.exits.pluck(:direction)
+    fallback_direction = if available_directions.include?('up')
+                           'up'
+                         elsif available_directions.include?('west')
+                           'west'
+                         end
+
+    return "Exit where?" if fallback_direction.blank?
+
+    move(fallback_direction)
+  end
+
+  def whereami
+    exits = current_room.exits.pluck(:direction)
+    exits_text = exits.any? ? exits.join(', ') : 'none'
+
+    "You are in #{current_room.name}. Exits: #{exits_text}."
   end
 
   def take(item_name)
@@ -128,6 +176,11 @@ class Player < ApplicationRecord
 
   def normalize_terms(terms)
     Array(terms).join(' ').squish
+  end
+
+  def normalize_direction(terms)
+    normalized = normalize_terms(terms).downcase
+    DIRECTION_ALIASES.fetch(normalized, normalized)
   end
 
   def find_accessible_item(item_name)
